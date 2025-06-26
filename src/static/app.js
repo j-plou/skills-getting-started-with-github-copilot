@@ -19,9 +19,22 @@ document.addEventListener("DOMContentLoaded", () => {
         activityCard.className = "activity-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
-        const participantsList = details.participants.length > 0 
-          ? details.participants.map(email => `<span class="participant-item">${email}</span>`).join('')
-          : '<p class="no-participants">No participants yet</p>';
+
+        const participantsList = document.createElement("div");
+        participantsList.className = "participants-list";
+        if (details.participants.length > 0) {
+          details.participants.forEach(email => {
+            const participantItem = document.createElement("span");
+            participantItem.className = "participant-item";
+            participantItem.textContent = email;
+            participantsList.appendChild(participantItem);
+          });
+        } else {
+          const noParticipantsMessage = document.createElement("p");
+          noParticipantsMessage.className = "no-participants";
+          noParticipantsMessage.textContent = "No participants yet";
+          participantsList.appendChild(noParticipantsMessage);
+        }
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
@@ -30,10 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants-section">
             <div class="participants-count">Participants (${details.participants.length}/${details.max_participants}):</div>
-            <div class="participants-list">${participantsList}</div>
+            <div class="participants-list"></div>
           </div>
         `;
-
+        activityCard.querySelector('.participants-list').appendChild(participantsList);
         activitiesList.appendChild(activityCard);
 
         // Add option to select dropdown
