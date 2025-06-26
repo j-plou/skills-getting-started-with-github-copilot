@@ -15,27 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
-        const activityCard = document.createElement("div");
-        activityCard.className = "activity-card";
-
         const spotsLeft = details.max_participants - details.participants.length;
 
-        const participantsList = document.createElement("div");
-        participantsList.className = "participants-list";
-        if (details.participants.length > 0) {
-          details.participants.forEach(email => {
-            const participantItem = document.createElement("span");
-            participantItem.className = "participant-item";
-            participantItem.textContent = email;
-            participantsList.appendChild(participantItem);
-          });
-        } else {
-          const noParticipantsMessage = document.createElement("p");
-          noParticipantsMessage.className = "no-participants";
-          noParticipantsMessage.textContent = "No participants yet";
-          participantsList.appendChild(noParticipantsMessage);
-        }
-
+        const activityCard = document.createElement("div");
+        activityCard.className = "activity-card";
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
@@ -46,7 +29,22 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="participants-list"></div>
           </div>
         `;
-        activityCard.querySelector('.participants-list').appendChild(participantsList);
+
+        const participantsListContainer = activityCard.querySelector('.participants-list');
+        if (details.participants.length > 0) {
+          details.participants.forEach(email => {
+            const participantItem = document.createElement("span");
+            participantItem.className = "participant-item";
+            participantItem.textContent = email;
+            participantsListContainer.appendChild(participantItem);
+          });
+        } else {
+          const noParticipantsMessage = document.createElement("p");
+          noParticipantsMessage.className = "no-participants";
+          noParticipantsMessage.textContent = "No participants yet";
+          participantsListContainer.appendChild(noParticipantsMessage);
+        }
+
         activitiesList.appendChild(activityCard);
 
         // Add option to select dropdown
